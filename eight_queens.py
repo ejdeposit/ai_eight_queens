@@ -1,8 +1,16 @@
-def init_board(board, rowMax=8, colMax=9):
+def init_board(rowMax=8, colMax=8):
+    board={}
     for i in range(0,rowMax):
         board[i]={}
         for j in range(0,colMax):
             board[i][j]=None
+    return board
+
+def to_board(configStr):
+    board =  init_board()
+    for i in range(0,8):
+        board[int(configStr[i])][i] = True
+    return board
 
 def attacking_queens(board):
     """
@@ -12,7 +20,7 @@ def attacking_queens(board):
     """
     pass
 
-def attacks(row, col, board):
+def attacked_by(row, col, board):
     colMax=8
     rowMax=8
     attackingQueens=0
@@ -33,6 +41,23 @@ def attacks(row, col, board):
         if board[i][col]:
             attackingQueens +=1
 
-    #check diagnols
+    #check diaganols
+    rowIndex = row - col
+    colIndex = 0
+    while(rowIndex < rowMax and colIndex < colMax):
+        if board[rowIndex][colIndex]:
+            attackingQueens += 1
+        rowIndex +=1
+        colIndex +=1
+    attackingQueens -=1
+
+    rowIndex = row + col
+    colIndex = 0
+    while(rowIndex >= 0 and colIndex < colMax):
+        if board[rowIndex][colIndex]:
+            attackingQueens += 1
+        rowIndex -= 1
+        colIndex += 1
+    attackingQueens -= 1
 
     return attackingQueens

@@ -2,22 +2,46 @@ import unittest
 import eight_queens as qu
 
 class TestEightSquare(unittest.TestCase):
+    def test_init_board(self):
+        board= qu.init_board()
+        rows =  board.keys()
+        #rows = [0,1,2,3,4,5,6,7]
+        for i in range(0,8):
+            self.assertIn(i, rows)
+
+        for i in range(0,8):
+            columns= board[i].keys()
+            for j in range(0,8):
+                self.assertIn(j, columns)
+                
     def test_queen_attacks_one_queen(self):
-        board={}
-        qu.init_board(board)
+        board = qu.init_board()
         board[0][0]=True
         board [0][1]=True
-        attacks= qu.attacks(0, 0, board)
+        attacks= qu.attacked_by(0, 0, board)
         self.assertEqual(attacks, 1)
 
     def test_queen_attacks_two_queen(self):
-        board={}
-        qu.init_board(board)
+        board = qu.init_board()
         board[4][1]=True
         board [4][3]=True
         board [7][1]=True
-        attacks= qu.attacks(4, 1, board)
+        attacks= qu.attacked_by(4, 1, board)
         self.assertEqual(attacks, 2)
+
+    def test_queen_diagonal_attacks_one_queen(self):
+        board = qu.init_board()
+        board[5][5]=True
+        board [2][2]=True
+        attacks= qu.attacked_by(2, 2, board)
+        self.assertEqual(attacks, 1)
+
+    def test_to_board(self):
+        board = qu.to_board('01234567')
+        row = 0
+        for col in range(0,8):
+            self.assertTrue(board[row][col])
+            row += 1
 
 #   def test_upper(self):
 #       self.assertEqual('foo'.upper(), 'FOO')
