@@ -21,14 +21,42 @@ class TestEightSquare(unittest.TestCase):
         attacks= qu.attacked_by(0, 0, board)
         self.assertEqual(attacks, 1)
 
-    def test_queen_attacks_two_queen(self):
+    def test_attacking_queens_four_pairs(self):
+        """
+        00000000
+        00000000
+        00000000
+        00000000
+        0x0x0000
+        00000000
+        00000000
+        0x000000
+        """
         board = qu.init_board()
         board[4][1]=True
-        board [4][3]=True
-        board [7][1]=True
+        board[4][3]=True
+        board[7][1]=True
+        attacks= qu.attacking_queens(board)
+        self.assertEqual(attacks, 4)
+
+    def test_queen_attacks_two_queen(self):
+        """
+        00000000
+        00000000
+        00000000
+        00000000
+        0x0x0000
+        00000000
+        00000000
+        0x000000
+        """
+        board = qu.init_board()
+        board[4][1]=True
+        board[4][3]=True
+        board[7][1]=True
         attacks= qu.attacked_by(4, 1, board)
         self.assertEqual(attacks, 2)
-
+        
     def test_queen_diagonal_attacks_one_queen(self):
         board = qu.init_board()
         board[5][5]=True

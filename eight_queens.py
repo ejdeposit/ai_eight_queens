@@ -12,17 +12,20 @@ def to_board(configStr):
         board[int(configStr[i])][i] = True
     return board
 
-def attacking_queens(board):
+def attacking_queens(board, rowMax=8, colMax=8):
     """
     return number of mutually attacking queens.
     for each qeens find how many attacking, sume, divide by 2
     return
     """
-    pass
+    sum= 0
+    for i in range(0,rowMax):
+        for j in range(0,colMax):
+            if board[i][j]:
+                sum += attacked_by(i, j, board)
+    return sum
 
-def attacked_by(row, col, board):
-    colMax=8
-    rowMax=8
+def attacked_by(row, col, board, rowMax=8, colMax=8):
     attackingQueens=0
 
     #check rest of row
@@ -44,16 +47,22 @@ def attacked_by(row, col, board):
     #check diaganols
     rowIndex = row - col
     colIndex = 0
+    if rowIndex < 0:
+        rowIndex=row
+        colIndex=col
     while(rowIndex < rowMax and colIndex < colMax):
         if board[rowIndex][colIndex]:
             attackingQueens += 1
         rowIndex +=1
         colIndex +=1
     attackingQueens -=1
-
+     
     rowIndex = row + col
     colIndex = 0
-    while(rowIndex >= 0 and colIndex < colMax):
+    if rowIndex >= rowMax:
+        rowIndex=row
+        colIndex=col
+    while(rowIndex >= 0 and colIndex < colMax-1):
         if board[rowIndex][colIndex]:
             attackingQueens += 1
         rowIndex -= 1
