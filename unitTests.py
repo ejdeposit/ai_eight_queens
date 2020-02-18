@@ -76,7 +76,7 @@ class TestEightSquare(unittest.TestCase):
         parent2='76543210'
         crossOverPoint=4
         expChild='01233210'
-        child=qu.crossover(parent1, parent2, crossOverPoint)
+        child=qu.cross_over(parent1, parent2, crossOverPoint)
         self.assertEqual(child, expChild)
 
     def test_mutation(self):

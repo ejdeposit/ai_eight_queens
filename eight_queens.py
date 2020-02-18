@@ -11,6 +11,19 @@ def init_board(rowMax=8, colMax=8):
             board[i][j]=False
     return board
 
+def print_board(board, rowMax=8, colMax=8):
+    """
+    print board
+    """
+    for i in range(0,rowMax):
+        for j in range(0,colMax):
+            if board[i][j]:
+                print('  X  ', end='')
+            else:
+                print('  0  ', end='')
+        print('')
+
+
 def to_board(configStr):
     """
     turns string into board with queens on it
@@ -97,7 +110,7 @@ def fitness(config):
 def selection_probability(fitness, totalFitness):
     return fitness/totalFitness
 
-def crossover(parent1, parent2, crossOverPoint=random.randint(0,7), maxCol=8):
+def cross_over(parent1, parent2, crossOverPoint=random.randint(0,7), maxCol=8):
     child=''
     for i in range(0, crossOverPoint):
         child=child + parent1[i]
@@ -124,13 +137,13 @@ mutation=random.randint(0,7), maxCol=8):
 
 def fill_lottery(population):
     """
-    lottery is list of all configurations with copies of each equall to fitness score
+    return list of configuration with duplicates proportional to fitness score 
     """
     lottery=[]
 
     for indv in population:
-        #fitnessScore = population[indv]['FITNESS']
-        fitness = fitness(indv)
-        for _ in range(0, fitness):
+        fitnessScore=0
+        fitnessScore = fitness(indv)
+        for _ in range(0, fitnessScore):
             lottery.append(indv)
     return lottery
