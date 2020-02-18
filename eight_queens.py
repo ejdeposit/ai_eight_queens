@@ -123,13 +123,14 @@ mutation=random.randint(0,7), maxCol=8):
     return mutatedConfig
 
 def fill_lottery(population):
-    totalFitness=0
-    population= population.keys()
+    """
+    lottery is list of all configurations with copies of each equall to fitness score
+    """
     lottery=[]
 
     for indv in population:
         #fitnessScore = population[indv]['FITNESS']
-        fitness = fitness(config)
+        fitness = fitness(indv)
         for _ in range(0, fitness):
             lottery.append(indv)
     return lottery
