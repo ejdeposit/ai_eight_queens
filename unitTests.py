@@ -71,6 +71,22 @@ class TestEightSquare(unittest.TestCase):
             self.assertTrue(board[row][col])
             row += 1
 
+    def test_crossover(self):
+        parent1='01234567'
+        parent2='76543210'
+        crossOverPoint=4
+        expChild='01233210'
+        child=qu.crossover(parent1, parent2, crossOverPoint)
+        self.assertEqual(child, expChild)
+
+    def test_mutation(self):
+        pass
+
+    def test_fitness_of_solution(self):
+        fitness = qu.fitness('75316420')
+        self.assertEqual(fitness, 28)
+
+        
 #   def test_upper(self):
 #       self.assertEqual('foo'.upper(), 'FOO')
 

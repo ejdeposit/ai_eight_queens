@@ -1,16 +1,33 @@
+import random 
+
 def init_board(rowMax=8, colMax=8):
+    """
+    returns blank board
+    """
     board={}
     for i in range(0,rowMax):
         board[i]={}
         for j in range(0,colMax):
-            board[i][j]=None
+            board[i][j]=False
     return board
 
 def to_board(configStr):
+    """
+    turns string into board with queens on it
+    """
     board =  init_board()
     for i in range(0,8):
         board[int(configStr[i])][i] = True
     return board
+
+def random_config(colMax=8):
+    """
+    makes random config string
+    """
+    config=''
+    for _ in range (0, colMax):
+        config = config + str(random.randint(0,7))
+    return config
 
 def attacking_queens(board, rowMax=8, colMax=8):
     """
@@ -70,3 +87,49 @@ def attacked_by(row, col, board, rowMax=8, colMax=8):
     attackingQueens -= 1
 
     return attackingQueens
+
+def fitness(config):
+    """
+    28 non attacking queens is solution
+    """
+    return 28 - attacking_queens(to_board(config))
+
+def selection_probability(fitness, totalFitness):
+    return fitness/totalFitness
+
+def crossover(parent1, parent2, crossOverPoint=random.randint(0,7), maxCol=8):
+    child=''
+    for i in range(0, crossOverPoint):
+        child=child + parent1[i]
+
+    for i in range(crossOverPoint, maxCol):
+        child=child + parent2[i]
+    return child
+
+def mutation(config, mutationPoint=random.randint(0,7),
+mutation=random.randint(0,7), maxCol=8):
+    """
+    call mutation randomly outside of function for testing purposes
+    """
+    mutatedConfig=''
+
+    for i in range(0, mutationPoint):
+        mutatedConfig=mutatedConfig + config[i]
+    
+    mutatedConfig =  mutatedConfig + mutation
+
+    for i in range(mutationPoint+1, maxCol):
+        mutatedConfig=mutatedConfig + config[i]
+    return mutatedConfig
+
+def fill_lottery(population):
+    totalFitness=0
+    population= population.keys()
+    lottery=[]
+
+    for indv in population:
+        #fitnessScore = population[indv]['FITNESS']
+        fitness = fitness(config)
+        for _ in range(0, fitness):
+            lottery.append(indv)
+    return lottery
