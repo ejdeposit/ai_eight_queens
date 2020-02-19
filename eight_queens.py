@@ -62,17 +62,23 @@ def attacked_by(row, col, board, rowMax=8, colMax=8):
     for i in range(0, col):
         if board[row][i]:
             attackingQueens +=1
+            break
+
     for i in range(col+1, colMax):
         if board[row][i]:
             attackingQueens +=1
+            break
 
     #check rest of column
     for i in range(0, row):
         if board[i][col]:
             attackingQueens +=1
+            break
+
     for i in range(row+1, rowMax):
         if board[i][col]:
             attackingQueens +=1
+            break
 
     #check diaganols
     rowIndex = row - col
@@ -147,3 +153,22 @@ def fill_lottery(population):
         for _ in range(0, fitnessScore):
             lottery.append(indv)
     return lottery
+
+def get_reproducer(population, randomFitness):
+    fitness=0
+    index=0
+    individual=None
+
+    while fitness < randomFitness:
+        individual = population[index]
+        fitness += individual[0]
+        index += 1
+
+    if individual:   
+        return individual[1]
+    else:
+        return population[0][1]
+        
+
+        
+        

@@ -64,6 +64,22 @@ class TestEightSquare(unittest.TestCase):
         attacks= qu.attacked_by(2, 2, board)
         self.assertEqual(attacks, 1)
 
+    def test_attacking_queens_all_on_diagonals(self):
+        config='01234567'
+        board=qu.to_board(config)
+        self.assertEqual(qu.attacking_queens(board), 28)
+        
+    def test_attacking_queens_all_on_row(self):
+        config='11111111'
+        board=qu.to_board(config)
+        self.assertEqual(qu.attacking_queens(board), 28)
+
+    def test_attacking_queens_all_on_col(self):
+        board=qu.init_board()
+        for i in range(0,8):
+            board[i][1]=True
+        self.assertEqual(qu.attacking_queens(board), 28)
+
     def test_to_board(self):
         board = qu.to_board('01234567')
         row = 0
