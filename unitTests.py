@@ -18,10 +18,14 @@ class TestEightSquare(unittest.TestCase):
         board = qu.init_board()
         board[0][0]=True
         board [0][1]=True
+
+        expected=set()
+        expected.add('00-01')
+
         attacks= qu.attacked_by(0, 0, board)
-        self.assertEqual(attacks, 1)
+        self.assertEqual(attacks, expected)
 
-    def test_attacking_queens_four_pairs(self):
+    def test_attacked_by_two_pairs(self):
         """
         00000000
         00000000
@@ -36,33 +40,28 @@ class TestEightSquare(unittest.TestCase):
         board[4][1]=True
         board[4][3]=True
         board[7][1]=True
-        attacks= qu.attacking_queens(board)
-        self.assertEqual(attacks, 4)
 
-    def test_queen_attacks_two_queen(self):
-        """
-        00000000
-        00000000
-        00000000
-        00000000
-        0x0x0000
-        00000000
-        00000000
-        0x000000
-        """
-        board = qu.init_board()
-        board[4][1]=True
-        board[4][3]=True
-        board[7][1]=True
+        expected=set()
+        expected.add('41-43')
+        expected.add('41-71')
+
         attacks= qu.attacked_by(4, 1, board)
-        self.assertEqual(attacks, 2)
+        self.assertEqual(attacks, expected)
         
-    def test_queen_diagonal_attacks_one_queen(self):
+    def test_attacked_by_one_diagnol_pair(self):
         board = qu.init_board()
-        board[5][5]=True
-        board [2][2]=True
-        attacks= qu.attacked_by(2, 2, board)
-        self.assertEqual(attacks, 1)
+        board[0][0]=True
+        board [5][5]=True
+
+        expected=set()
+        expected.add('00-55')
+
+        attacks= qu.attacked_by(0, 0, board)
+        print('')
+        for item in attacks:
+            print(item)
+        print('')
+        self.assertEqual(attacks, expected)
 
     def test_attacking_queens_all_on_diagonals(self):
         config='01234567'
@@ -98,9 +97,9 @@ class TestEightSquare(unittest.TestCase):
     def test_mutation(self):
         pass
 
-    def test_fitness_of_solution(self):
+    def test_fitness_of_sub_optimal_solution(self):
         fitness = qu.fitness('75316420')
-        self.assertEqual(fitness, 28)
+        self.assertEqual(fitness, 27)
 
         
 #   def test_upper(self):
