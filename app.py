@@ -1,5 +1,6 @@
 import eight_queens as qu
 import random
+import matplotlib.pyplot as plt
 
 k = 100
 maxGeneration=1000
@@ -62,3 +63,7 @@ print(bestSolution[1])
 print(bestSolution[0])
 solutionBoard=qu.to_board(bestSolution[1])
 qu.print_board(solutionBoard)
+
+plt.plot([1, 2, 3, 4], [1, 4, 9, 16], 'ro')
+plt.axis([0, 6, 0, 20])
+plt.show()
