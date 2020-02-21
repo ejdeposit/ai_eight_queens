@@ -2,16 +2,34 @@ import eight_queens as qu
 import random
 import csv
 import matplotlib.pyplot as plt
+import sys 
 
-k = 100
-maxGeneration=1000
 population = []
 populationFitness = 0
 nextGen=[]
 points=[]
 
+argLen=len(sys.argv)
+if argLen == 1:
+    PopulationSize = 100
+    NumIterations=1000
+    MutationPct = 10
+elif argLen == 4:
+    PopulationSize = int(sys.argv[1])
+    NumIterations = int(sys.argv[2])
+    MutationPct = int(sys.argv[3])
+else:
+    print(
+        """
+        Not enough arguments.
+        Enter Desired PopulationSize, NumIterations, and MutationPct as arguments.  
+        To use default arguments enter no arguments. 
+        """
+    )
+    exit(1)
+
 #generate starting population
-for i in range(0, k):
+for i in range(0, PopulationSize):
     config = qu.random_config()
     score = qu.fitness(config) 
     populationFitness += score
@@ -19,13 +37,13 @@ for i in range(0, k):
 
 bestSolution=(0,'0')
 
-for gen in range(0, maxGeneration):
+for gen in range(0, NumIterations):
     population.sort()
     nextGen=[]
     nextGenFitness=0
 
     #create next generation
-    for i in range(0, k):
+    for i in range(0, PopulationSize):
         #crossover
         #resuse this random number for random mutation likelyhood to save call to rand
         randomFitness1= random.randint(0, populationFitness)
@@ -35,9 +53,8 @@ for gen in range(0, maxGeneration):
         childConfig = qu.cross_over(parent1, parent2)
 
         #mutation
-        mutationLikelyhood = 10
         randomMutation =  (randomFitness1 + 100)%100
-        if randomMutation < mutationLikelyhood:
+        if randomMutation <  MutationPct:
             childConfig= qu.mutation(childConfig, randomFitness1%8, randomFitness2%8)
 
         #add to next gen
@@ -48,7 +65,7 @@ for gen in range(0, maxGeneration):
         if child > bestSolution:
             bestSolution = child
 
-    avgFitness= populationFitness/k
+    avgFitness= populationFitness/PopulationSize
     point=(gen,avgFitness)
     points.append(point)
 
@@ -58,8 +75,9 @@ for gen in range(0, maxGeneration):
     population = nextGen
     populationFitness= nextGenFitness
 
-    
-print(f'Solution:{bestSolution[1]} Score:{bestSolution[0]}')
+if bestSolution[0] != 28:    
+    print('No Solution found! Change PopulationSize, NumIterations, and MutationPct arguments or use defaults to find a optimal solution.')
+print(f'Best Solution:{bestSolution[1]} Score:{bestSolution[0]}')
 solutionBoard=qu.to_board(bestSolution[1])
 qu.print_board(solutionBoard)
 
