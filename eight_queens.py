@@ -24,7 +24,6 @@ def print_board(board, rowMax=8, colMax=8):
         print('')
         print('')
 
-
 def to_board(configStr):
     """
     turns string into board with queens on it
@@ -55,9 +54,6 @@ def attacking_queens(board, rowMax=8, colMax=8):
             if board[i][j]:
                 attackingPairs = attackingPairs.union(attacked_by(i, j, board))
 
-   #for pair in attackingPairs:
-   #    print(pair)
-   #print('')
     return len(attackingPairs)
 
 def new_pair(row1, col1, row2, col2):
@@ -97,7 +93,6 @@ def attacked_by(row, col, board, rowMax=8, colMax=8):
         if board[i][col]:
             attackingPairs.add(new_pair(row, col, i, col))
 
-
     attackingSelf=str(row) + str(col) + '-' + str(row) + str(col)
     #check diaganols
     rowIndex = row - col
@@ -134,9 +129,6 @@ def fitness(config):
     """
     return 28 - attacking_queens(to_board(config))
 
-def selection_probability(fitness, totalFitness):
-    return fitness/totalFitness
-
 def cross_over(parent1, parent2, crossOverPoint=random.randint(0,7), maxCol=8):
     child=''
     for i in range(0, crossOverPoint):
@@ -162,24 +154,10 @@ mutation=random.randint(0,7), maxCol=8):
         mutatedConfig=mutatedConfig + config[i]
     return mutatedConfig
 
-def fill_lottery(population):
-    """
-    return list of configuration with duplicates proportional to fitness score 
-    """
-    lottery=[]
-
-    for indv in population:
-        fitnessScore=0
-        fitnessScore = fitness(indv)
-        for _ in range(0, fitnessScore):
-            lottery.append(indv)
-    return lottery
-
 def get_reproducer(population, randomFitness):
     fitness=0
     index=-1
     individual=None
-
 
     while fitness < randomFitness:
         index += 1
