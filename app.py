@@ -1,13 +1,15 @@
 import eight_queens as qu
 import random
-import matplotlib.pyplot as plt
+import csv
 
 k = 100
 maxGeneration=1000
 population = []
 populationFitness = 0
 nextGen=[]
-solution=''
+#solution=''
+points=[]
+
 
 
 #generate starting population
@@ -47,23 +49,29 @@ for gen in range(0, maxGeneration):
         nextGen.append(child)
         nextGenFitness += child[0]
 
-
         if child > bestSolution:
             bestSolution = child
-            if bestSolution[0] == 28:
-                break
+           #if bestSolution[0] == 28:
+           #    break
+
+    avgFitness= populationFitness/k
+    point= {'Generation':gen , 'Fitness':avgFitness}
+    points.append(point)
 
     if bestSolution[0] ==  28:
         break
+
     population = nextGen
     populationFitness= nextGenFitness
 
     
-print(bestSolution[1])
-print(bestSolution[0])
+#print(bestSolution[1])
+#print(bestSolution[0])
+print(f'Solution:{bestSolution[1]} Score:{bestSolution[0]}')
 solutionBoard=qu.to_board(bestSolution[1])
 qu.print_board(solutionBoard)
 
-plt.plot([1, 2, 3, 4], [1, 4, 9, 16], 'ro')
-plt.axis([0, 6, 0, 20])
-plt.show()
+with open('graph.csv', 'wt') as fout:
+    cout = csv.DictWriter(fout, ['Generation', 'Fitness'])
+    cout.writeheader()
+    cout.writerows(points)
