@@ -8,6 +8,7 @@ population = []
 populationFitness = 0
 nextGen=[]
 points=[]
+randomSampleOfPop=[]
 
 argLen=len(sys.argv)
 if argLen == 1:
@@ -18,6 +19,8 @@ elif argLen == 4:
     PopulationSize = int(sys.argv[1])
     NumIterations = int(sys.argv[2])
     MutationPct = int(sys.argv[3])
+    if MutationPct > 100: 
+        mutationPct = mutationPct%100
 else:
     print(
         """
@@ -54,7 +57,7 @@ for gen in range(0, NumIterations):
 
         #mutation
         randomMutation =  (randomFitness1 + 100)%100
-        if randomMutation <  MutationPct:
+        if randomMutation <=  MutationPct:
             childConfig= qu.mutation(childConfig, randomFitness1%8, randomFitness2%8)
 
         #add to next gen
@@ -64,6 +67,11 @@ for gen in range(0, NumIterations):
 
         if child > bestSolution:
             bestSolution = child
+
+    #get random sample from pop
+    randomSampleNum=randomFitness1%PopulationSize
+    randomSampleOfPop.append((population[randomSampleNum][0], population[randomSampleNum][1], gen))
+
 
     avgFitness= populationFitness/PopulationSize
     point=(gen,avgFitness)
@@ -75,6 +83,11 @@ for gen in range(0, NumIterations):
     population = nextGen
     populationFitness= nextGenFitness
 
+
+for i in randomSampleOfPop:
+    if i[2]%10==0:
+        print(f'Generation:{i[2]}, Score:{i[0]}, Configuration:{i[1]}')
+print('')
 if bestSolution[0] != 28:    
     print('No Solution found! Change PopulationSize, NumIterations, and MutationPct arguments or use defaults to find a optimal solution.')
 print(f'Best Solution:{bestSolution[1]} Score:{bestSolution[0]}')
@@ -82,11 +95,11 @@ solutionBoard=qu.to_board(bestSolution[1])
 qu.print_board(solutionBoard)
 
 pointsDict=[{'Generation':point[0] , 'Fitness':point[1]} for point in points]
-
 with open('graph.csv', 'wt') as fout:
     cout = csv.DictWriter(fout, ['Generation', 'Fitness'])
     cout.writeheader()
     cout.writerows(pointsDict)
+
 
 plt.plot([point[0] for point in points], [point[1] for point in points], 'ro')
 plt.ylabel('Average Fitness')
